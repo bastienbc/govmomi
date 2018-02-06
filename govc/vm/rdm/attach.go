@@ -51,6 +51,7 @@ func (cmd *attach) Description() string {
 	return `Attach DEVICE to VM with RDM.
 
 Examples:
+  govc vm.rdm.attach -vm VM -device /vmfs/devices/disks/naa.000000000000000000000000000000000
   govc vm.rdm.attach -vm VM -device /vmfs/devices/disks/naa.000000000000000000000000000000000 -controller CONTROLLER`
 }
 
