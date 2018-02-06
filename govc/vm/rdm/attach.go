@@ -30,7 +30,8 @@ import (
 type attach struct {
 	*flags.VirtualMachineFlag
 
-	device string
+	device     string
+	controller string
 }
 
 func init() {
@@ -43,13 +44,14 @@ func (cmd *attach) Register(ctx context.Context, f *flag.FlagSet) {
 	cmd.VirtualMachineFlag.Register(ctx, f)
 
 	f.StringVar(&cmd.device, "device", "", "Device Name")
+	f.StringVar(&cmd.controller, "controller", "", "Controller Name")
 }
 
 func (cmd *attach) Description() string {
 	return `Attach DEVICE to VM with RDM.
 
 Examples:
-  govc vm.rdm.attach -vm VM -device /vmfs/devices/disks/naa.000000000000000000000000000000000`
+  govc vm.rdm.attach -vm VM -device /vmfs/devices/disks/naa.000000000000000000000000000000000 -controller CONTROLLER`
 }
 
 func (cmd *attach) Process(ctx context.Context) error {
@@ -76,7 +78,7 @@ func (cmd *attach) Run(ctx context.Context, f *flag.FlagSet) error {
 		return err
 	}
 
-	controller, err := devices.FindSCSIController("")
+	controller, err := devices.FindSCSIController(cmd.controller)
 	if err != nil {
 		return err
 	}
